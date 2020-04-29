@@ -9,6 +9,6 @@ Required python libraries:
 
 HOW TO USE:
 1. Creating a map
-  - Download 'Environment Builder'
-  - Run 'main.py'
-  - When finished, press the "enter" key to save map to 'map.txt'
+   - Download 'Environment Builder'
+   - Run 'main.py'
+   - When finished, press the "enter" key to save map to 'map.txt'
