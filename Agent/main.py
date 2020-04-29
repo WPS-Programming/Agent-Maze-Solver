@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 import time
 from Environment import Env
 import settings

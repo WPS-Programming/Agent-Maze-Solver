@@ -5,6 +5,9 @@ import pygame.gfxdraw
 from AAfilledRoundedRect import AAfilledRoundedRect
 from colors import *
 
+import sys
+sys.path.append('../')
+
 pygame.init()
 
 WIDTH = 1000
