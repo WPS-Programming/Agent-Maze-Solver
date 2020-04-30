@@ -34,6 +34,8 @@ class Env:
 		self.agent = pygame.math.Vector2(*find_start(grid))
 		self.turns = 0
 
+		print(build['teleporters'])
+
 	def __str__(self):
 		return f'Env(agent={self.agent}, grid={[len(self.grid),len(self.grid[0])]})'
 
@@ -99,31 +101,31 @@ class Env:
 					elif item == 10:
 						roundedRect(
 							self.screen, TURQUOISE, rect, tp_roundness)
-					elif item == 11:
+					elif item == 20:
 						roundedRect(
 							self.screen, TURQUOISE, rect, tp_roundness)
 						roundedRect(
 							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 20:
+					elif item == 11:
 						roundedRect(
 							self.screen, LAVENDER, rect, tp_roundness)
+					elif item == 21:
+						roundedRect(
+							self.screen, LAVENDER, rect, tp_roundness)
+						roundedRect(
+							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
+					elif item == 12:
+						roundedRect(
+							self.screen, MANDY, rect, tp_roundness)
 					elif item == 22:
 						roundedRect(
-							self.screen, LAVENDER, rect, tp_roundness)
-						roundedRect(
-							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 30:
-						roundedRect(
-							self.screen, MANDY, rect, tp_roundness)
-					elif item == 33:
-						roundedRect(
 							self.screen, MANDY, rect, tp_roundness)
 						roundedRect(
 							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 40:
+					elif item == 13:
 						roundedRect(
 							self.screen, PORSCHE, rect, tp_roundness)
-					elif item == 44:
+					elif item == 23:
 						roundedRect(
 							self.screen, PORSCHE, rect, tp_roundness)
 						roundedRect(
@@ -169,8 +171,11 @@ class Env:
 			return
 
 		# Check if hitting wall
-		if (self.grid[int(predicted.y)][int(predicted.x)] == 1):
-			# Do nothing
+		try:
+			if (self.grid[int(predicted.y)][int(predicted.x)] == 1):
+				# Do nothing
+				return
+		except:
 			return
 
 		# Make a successful move
@@ -201,5 +206,4 @@ if __name__ == "__main__":
 		if abs(last_tick - pygame.time.get_ticks()) > 500:
 			env.draw()
 			env.receive((random.randint(-1, 1), random.randint(-1, 1)))
-			print(env)
 			last_tick = pygame.time.get_ticks()

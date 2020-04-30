@@ -144,11 +144,14 @@ class Builder:
 				shape=(length, length - len(g[0]))), axis=1)
 
 		try:
+
+			# TODO: styling of comparative tuples to be (x, y)
+
 			self.start = shift_tuple(self.start, up_shift, left_shift)
 			self.end = shift_tuple(self.end, up_shift, left_shift)
 
 			for i in range(len(self.tps)):
-				if self.tps[i] is 0:
+				if self.tps[i] == 0:
 					continue
 				
 				tp_start, tp_end = self.tps[i]
@@ -239,8 +242,8 @@ class Builder:
 
 			if pygame.mouse.get_pressed()[0] == 1:
 				valid, pos = self.get_click(*pygame.mouse.get_pos())
-				if valid and self.selector is not 'tp':
-					if self.selector is 'none':
+				if valid and self.selector != 'tp':
+					if self.selector == 'none':
 						v = self.grid[pos[0]][pos[1]]
 
 						if self.start == pos:
