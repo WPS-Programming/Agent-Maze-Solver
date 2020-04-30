@@ -1,3 +1,4 @@
 .DS_Store # Prevents OSX Finder files from being pushed
 __pycache__
 map.txt
+.vscode

@@ -23,17 +23,16 @@ Manz = Color("#eceb65")
 
 def optimal_size(grid):
 
-    sq_length = len(grid)
-    desired_sq = 800
+	sq_length = len(grid)
+	desired_sq = 800
 
-    calculated = desired_sq - (desired_sq % sq_length)
+	calculated = desired_sq - (desired_sq % sq_length)
 
-    return calculated + MARGIN, calculated
+	return calculated + MARGIN, calculated
+
 
 def find_start(grid):
-
-    for y, row in enumerate(grid):
-        for x, item in enumerate(row):
-
-            if item == 2:
-                return (x, y)
+	for y, row in enumerate(grid):
+		for x, item in enumerate(row):
+			if item == 2:
+				return (x, y)

@@ -96,7 +96,7 @@ class Builder:
 
 			if item == 0:
 				pygame.draw.rect(
-						self.screen, COLOR_INDEPENDENCE, itemRect)
+					self.screen, COLOR_INDEPENDENCE, itemRect)
 			elif item == 1:
 				pygame.draw.rect(
 					self.screen, (0, 0, 0), itemRect)
@@ -134,9 +134,10 @@ class Builder:
 
 		if len(g) < length:
 			g = np.append(g, np.zeros(shape=(length - len(g), length)), axis=0)
-		
+
 		if len(g[0]) < length:
-			g = np.append(g, np.zeros(shape=(length, length - len(g[0]))), axis=1)
+			g = np.append(g, np.zeros(
+				shape=(length, length - len(g[0]))), axis=1)
 
 		return g
 
@@ -191,19 +192,21 @@ class Builder:
 							self.end = pos
 						elif self.selector == 'tp':
 							if self.tps[self.tp_index] == 0:
-									self.tps[self.tp_index] = [None, None]
+								self.tps[self.tp_index] = [None, None]
 							# Left click => In
 							if pygame.mouse.get_pressed()[0]:
 								if self.tps[self.tp_index][0] != None:
-									self.set_pos(*self.tps[self.tp_index][0], 0)
-								
+									self.set_pos(
+										*self.tps[self.tp_index][0], 0)
+
 								self.tps[self.tp_index][0] = pos
 								self.set_pos(*pos, 10 + self.tp_index)
 							# Right click => Out
 							if pygame.mouse.get_pressed()[2]:
 								if self.tps[self.tp_index][1] != None:
-									self.set_pos(*self.tps[self.tp_index][1], 0)
-								
+									self.set_pos(
+										*self.tps[self.tp_index][1], 0)
+
 								self.tps[self.tp_index][1] = pos
 								self.set_pos(*pos, 20 + self.tp_index)
 				elif event.type == pygame.KEYDOWN:
@@ -225,7 +228,6 @@ class Builder:
 
 					self.set_pos(*pos, VALUE_MAP[self.selector])
 
-			
 			if self.first_run:
 				self.draw_background()
 				self.draw_grid_items()
@@ -240,6 +242,7 @@ class Builder:
 	def cleanup_and_exit(self):
 		pygame.quit()
 		exit(0)
+
 
 if __name__ == "__main__":
 	builder = Builder()
