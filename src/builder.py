@@ -13,6 +13,10 @@ VALUE_MAP = {
 }
 
 
+def shift_tuple(t, up, left):
+	return (t[0] - up, t[1] - left)
+
+
 class Button:
 	def __init__(self, color, rect, value):
 		self.rect = rect
@@ -109,9 +113,13 @@ class Builder:
 	def get_output(self):
 		g = self.grid.copy()
 
+		up_shift = 0
+		left_shift = 0
+
 		# Top down cleaning
 		while not g[0].any():
 			g = g[1:]
+			up_shift += 1
 
 		# Down up cleaning
 		while not g[-1].any():
@@ -120,6 +128,7 @@ class Builder:
 		# Left -> right cleaning
 		while not g[:, 0].any():
 			g = np.delete(g, 0, 1)
+			left_shift += 1
 
 		# Right -> left cleaning
 		while not g[:, -1].any():
@@ -134,16 +143,20 @@ class Builder:
 			g = np.append(g, np.zeros(
 				shape=(length, length - len(g[0]))), axis=1)
 
-		for y, row in enumerate(g):
-			for x, item in enumerate(row):
+		try:
+			self.start = shift_tuple(self.start, up_shift, left_shift)
+			self.end = shift_tuple(self.end, up_shift, left_shift)
 
-				if item == 2:
-					self.start = (x, y)
-				elif item == 3:
-					self.end = (x, y)
+			for i in range(len(self.tps)):
+				if self.tps[i] is 0:
+					continue
+				
+				tp_start, tp_end = self.tps[i]
 
-				# TODO: fix corresponding values for teleporters /
-				# and add them to a coordinates list for the 'build'
+				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
+				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
+		except:
+			print('Missing required component')
 				
 		return g
 
@@ -227,7 +240,7 @@ class Builder:
 			if pygame.mouse.get_pressed()[0] == 1:
 				valid, pos = self.get_click(*pygame.mouse.get_pos())
 				if valid and self.selector is not 'tp':
-					if self.selector == 'none':
+					if self.selector is 'none':
 						v = self.grid[pos[0]][pos[1]]
 
 						if self.start == pos:
