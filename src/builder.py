@@ -189,7 +189,7 @@ class Builder:
 					self.tps[3][0] = (x, y)
 				elif item == 23:
 					self.tps[3][1] = (x, y)
-		
+
 		return g
 
 	def get_click(self, mx, my):

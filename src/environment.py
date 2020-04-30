@@ -18,20 +18,12 @@ def optimal_size(grid):
 	# 200 is the margin
 	return calculated + 200, calculated
 
-
-def find_start(grid):
-	for y, row in enumerate(grid):
-		for x, item in enumerate(row):
-			if item == 2:
-				return (x, y)
-
-
 class Env:
 	def __init__(self, build):
 
 		self.build = build
 		self.grid = build['grid']
-		self.agent = pygame.math.Vector2(*find_start(grid))
+		self.agent = pygame.math.Vector2(*build['start'])
 		self.turns = 0
 		self.completed = False
 
@@ -41,6 +33,9 @@ class Env:
 	def pygame_init(self):
 
 		pygame.init()
+		pygame.font.init()
+
+		self.font = pygame.font.Font(pygame.font.get_default_font(), 30)
 
 		self.WIDTH, self.HEIGHT = optimal_size(self.grid)
 		self.sq = int(self.HEIGHT / len(self.grid))
@@ -65,6 +60,11 @@ class Env:
 			# Draw border line
 			pygame.gfxdraw.line(self.screen, self.WIDTH-200,
 								0, self.WIDTH-200, self.HEIGHT, COLOR_TIMBERWOLF)
+
+			# Draw text
+			text = "Turns: " + str(self.turns)
+			text = self.font.render(text, True, (COLOR_MAIZE))
+			self.screen.blit(text, (805, 20))
 
 		def tiles(self):
 
@@ -254,12 +254,11 @@ if __name__ == "__main__":
 		if abs(last_tick - pygame.time.get_ticks()) > update_on:
 			env.draw()
 
-			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
-
 			#TODO:
 			# input = env.get_state()
 			# move = agent.make_move(input)
 			# env.receive(move)
-
+			env.receive((random.randint(-1, 1), random.randint(-1, 1)))
+			
 			last_tick = pygame.time.get_ticks()
 			if update_on != update_default: update_on = update_default
