@@ -2,14 +2,7 @@ import numpy as np
 import pygame
 import pygame.gfxdraw
 
-from display import *
-
-pygame.init()
-
-WIDTH = 1000
-HEIGHT = 800
-FPS = 144
-OFFSET = 25
+from settings import *
 
 VALUE_MAP = {
 	'wall': 1,
@@ -17,6 +10,27 @@ VALUE_MAP = {
 	'start': 2,
 	'end': 3
 }
+
+
+class Button:
+	def __init__(self, color, rect, value):
+		self.rect = rect
+		self.color = color
+		self.value = value
+
+	# Checks to see if the button is hovering over the button
+	# Assumes that mouse click event has already been checked in the mainloop
+	def is_clicked(self):
+		pos = pygame.mouse.get_pos()
+		if self.rect[0] < pos[0] and self.rect[0] + self.rect[2] > pos[0]:
+			if self.rect[1] < pos[1] and self.rect[1] + self.rect[3] > pos[1]:
+				return True
+
+		return False
+
+	# Renders the button and the centered text
+	def render(self, screen):
+		pygame.draw.rect(screen, self.color, self.rect)
 
 
 class Builder:
@@ -38,8 +52,8 @@ class Builder:
 		self.buttons = [
 			Button((30, 30, 30), (850, 25, 100, 100), 'wall'),
 			Button((220, 220, 220), (850, 150, 100, 100), 'none'),
-			Button((70, 212, 122), (825, 300, 75, 75), 'start'),
-			Button((68, 156, 212), (900, 300, 75, 75), 'end'),
+			Button(COLOR_START, (825, 300, 75, 75), 'start'),
+			Button(COLOR_END, (900, 300, 75, 75), 'end'),
 			Button(COLOR_TP[self.tp_index], (850, 500, 100, 100), 'tp')
 		]
 
@@ -65,26 +79,6 @@ class Builder:
 
 		for button in self.buttons:
 			button.render(self.screen)
-
-	def draw_grid_items(self):
-		for y, row in enumerate(self.grid):
-			for x, item in enumerate(row):
-				itemRect = (x*15 + OFFSET+1, y*15 + OFFSET+1, 14, 14)
-				if item == 0:
-					pass
-				elif item == 1:
-					pygame.draw.rect(
-						self.screen, (0, 0, 0), itemRect)
-				elif item == 2:
-					pygame.draw.rect(self.screen, (70, 212, 122), itemRect)
-				elif item == 3:
-					pygame.draw.rect(self.screen, (68, 156, 212), itemRect)
-				elif item - 10 < 5:
-					index = int((item - 10) % 4)
-					pygame.draw.rect(self.screen, COLOR_TP[index], itemRect)
-				elif item - 20 < 5:
-					index = int((item - 20) % 4)
-					pygame.draw.rect(self.screen, COLOR_TP[index], itemRect, 2)
 
 	def draw_updated(self):
 		for i in self.edited:
@@ -153,6 +147,8 @@ class Builder:
 		return (False, None)
 
 	def mainloop(self):
+		pygame.init()
+
 		while True:
 			self.clock.tick(FPS)
 
@@ -230,7 +226,7 @@ class Builder:
 
 			if self.first_run:
 				self.draw_background()
-				self.draw_grid_items()
+				# self.draw_grid_items()
 			else:
 				self.draw_updated()
 

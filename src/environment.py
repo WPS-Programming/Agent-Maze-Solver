@@ -5,7 +5,24 @@ import numpy as np
 import random
 import pygame.gfxdraw
 from settings import *
-from display import roundedRect
+
+
+def optimal_size(grid):
+
+	sq_length = len(grid)
+	desired_sq = 800
+
+	calculated = desired_sq - (desired_sq % sq_length)
+
+	# 200 is the margin
+	return calculated + 200, calculated
+
+
+def find_start(grid):
+	for y, row in enumerate(grid):
+		for x, item in enumerate(row):
+			if item == 2:
+				return (x, y)
 
 
 class Env:
@@ -25,26 +42,26 @@ class Env:
 		self.WIDTH, self.HEIGHT = optimal_size(self.grid)
 		self.sq = int(self.HEIGHT / len(self.grid))
 		self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-		pygame.display.set_caption(CAPTION)
+		pygame.display.set_caption("Maze Agent Environment")
 
 	def draw(self):
 		def background(self):
 
 			spacer = int(self.HEIGHT / len(self.grid))
 
-			self.screen.fill(Gunmetal)
+			self.screen.fill(COLOR_GUNMETAL)
 
 			# Draw grid lines
 			for y, row in enumerate(self.grid):
 				for x in range(len(row)):
 					pygame.gfxdraw.line(
-						self.screen, x*spacer, 0, x*spacer, self.HEIGHT, Glaucous)
+						self.screen, x*spacer, 0, x*spacer, self.HEIGHT, COLOR_GLAUCOUS)
 				pygame.gfxdraw.line(self.screen, 0, y*spacer,
-									self.WIDTH-200, y*spacer, Glaucous)
+									self.WIDTH-200, y*spacer, COLOR_GLAUCOUS)
 
 			# Draw border line
 			pygame.gfxdraw.line(self.screen, self.WIDTH-200,
-								0, self.WIDTH-200, self.HEIGHT, Timberwolf)
+								0, self.WIDTH-200, self.HEIGHT, COLOR_TIMBERWOLF)
 
 		def tiles(self):
 
@@ -67,48 +84,48 @@ class Env:
 					if item == 1:
 						# wall
 						roundedRect(
-							self.screen, Independence, rect, roundness)
+							self.screen, COLOR_INDEPENDENCE, rect, roundness)
 					elif item == 2:
 						# start tile
 						roundedRect(
-							self.screen, Start, rect, roundness)
+							self.screen, COLOR_START, rect, roundness)
 					elif item == 3:
 						# end tile
-						roundedRect(self.screen, End, rect, roundness)
+						roundedRect(self.screen, COLOR_END, rect, roundness)
 
 					# teleporters
 					elif item == 10:
 						roundedRect(
-							self.screen, Turquoise_Blue, rect, tp_roundness)
+							self.screen, TURQUOISE, rect, tp_roundness)
 					elif item == 11:
 						roundedRect(
-							self.screen, Turquoise_Blue, rect, tp_roundness)
+							self.screen, TURQUOISE, rect, tp_roundness)
 						roundedRect(
-							self.screen, Gunmetal, tp_rect, tp_roundness)
+							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
 					elif item == 20:
 						roundedRect(
-							self.screen, Lavender, rect, tp_roundness)
+							self.screen, LAVENDER, rect, tp_roundness)
 					elif item == 22:
 						roundedRect(
-							self.screen, Lavender, rect, tp_roundness)
+							self.screen, LAVENDER, rect, tp_roundness)
 						roundedRect(
-							self.screen, Gunmetal, tp_rect, tp_roundness)
+							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
 					elif item == 30:
 						roundedRect(
-							self.screen, Mandy, rect, tp_roundness)
+							self.screen, MANDY, rect, tp_roundness)
 					elif item == 33:
 						roundedRect(
-							self.screen, Mandy, rect, tp_roundness)
+							self.screen, MANDY, rect, tp_roundness)
 						roundedRect(
-							self.screen, Gunmetal, tp_rect, tp_roundness)
+							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
 					elif item == 40:
 						roundedRect(
-							self.screen, Porsche, rect, tp_roundness)
+							self.screen, PORSCHE, rect, tp_roundness)
 					elif item == 44:
 						roundedRect(
-							self.screen, Porsche, rect, tp_roundness)
+							self.screen, PORSCHE, rect, tp_roundness)
 						roundedRect(
-							self.screen, Gunmetal, tp_rect, tp_roundness)
+							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
 
 		def agent(self):
 

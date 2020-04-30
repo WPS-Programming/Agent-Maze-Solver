@@ -1,38 +1,56 @@
-from pygame import Color
+import pygame
 
-FPS = 60
-CAPTION = "Maze Agent Environment"
-MARGIN = 200
+WIDTH = 1000
+HEIGHT = 800
+FPS = 144
+OFFSET = 25
 
-Maize = Color("#e8c547")
-Gunmetal = Color("#30323d")
-Independence = Color("#4d5061")
-Glaucous = Color("#5c90bc")
-Timberwolf = Color("#cdd1c4")
+COLOR_MAIZE = pygame.Color("#e8c547")
+COLOR_GUNMETAL = pygame.Color("#30323d")
+COLOR_INDEPENDENCE = pygame.Color("#4d5061")
+COLOR_GLAUCOUS = pygame.Color("#5c90bc")
+COLOR_TIMBERWOLF = pygame.Color("#cdd1c4")
 
-Start = Color("#5ee66c")
-End = Color("#4f66e3")
+COLOR_START = pygame.Color("#5ee66c")
+COLOR_END = pygame.Color("#4f66e3")
 
-Turquoise_Blue = Color("#5ee6c6")
-Lavender = Color("#c65ee6")
-Mandy = Color("#e65e5e")
-Porsche = Color("#e6a45e")
+TURQUOISE = pygame.Color("#5ee6c6")
+LAVENDER = pygame.Color("#c65ee6")
+MANDY = pygame.Color("#e65e5e")
+PORSCHE = pygame.Color("#e6a45e")
 
-Manz = Color("#eceb65")
-
-
-def optimal_size(grid):
-
-	sq_length = len(grid)
-	desired_sq = 800
-
-	calculated = desired_sq - (desired_sq % sq_length)
-
-	return calculated + MARGIN, calculated
+COLOR_TP = [TURQUOISE, LAVENDER, MANDY, PORSCHE]
 
 
-def find_start(grid):
-	for y, row in enumerate(grid):
-		for x, item in enumerate(row):
-			if item == 2:
-				return (x, y)
+Manz = pygame.Color("#eceb65")
+
+
+def roundedRect(surface, color, rect, radius=0.1):
+	rect = pygame.Rect(rect)
+	color = pygame.Color(*color)
+	alpha = color.a
+	color.a = 0
+	pos = rect.topleft
+	rect.topleft = 0, 0
+	rectangle = pygame.Surface(rect.size, pygame.SRCALPHA)
+
+	circle = pygame.Surface([min(rect.size)*3]*2, pygame.SRCALPHA)
+	pygame.draw.ellipse(circle, (0, 0, 0), circle.get_rect(), 0)
+	circle = pygame.transform.smoothscale(
+		circle, [int(min(rect.size)*radius)]*2)
+
+	radius = rectangle.blit(circle, (0, 0))
+	radius.bottomright = rect.bottomright
+	rectangle.blit(circle, radius)
+	radius.topright = rect.topright
+	rectangle.blit(circle, radius)
+	radius.bottomleft = rect.bottomleft
+	rectangle.blit(circle, radius)
+
+	rectangle.fill((0, 0, 0), rect.inflate(-radius.w, 0))
+	rectangle.fill((0, 0, 0), rect.inflate(0, -radius.h))
+
+	rectangle.fill(color, special_flags=pygame.BLEND_RGBA_MAX)
+	rectangle.fill((255, 255, 255, alpha), special_flags=pygame.BLEND_RGBA_MIN)
+
+	return surface.blit(rectangle, pos)
