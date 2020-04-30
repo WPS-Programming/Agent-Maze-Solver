@@ -160,7 +160,36 @@ class Builder:
 				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
 		except:
 			print('Missing required component')
-				
+
+		# NOTE: Working but 'nonefficient' way of finding all values
+		# notation in (x, y) order
+		# when tested, no noticable speed decrease/defficiency
+		"""
+		for y, row in enumerate(g):
+			for x, item in enumerate(row):
+
+				if item == 2:
+					self.start = (x, y)
+				elif item == 3:
+					self.end = (x, y)
+				# teleporters
+				elif item == 10:
+					self.tps[0][0] = (x, y)
+				elif item == 20:
+					self.tps[0][1] = (x, y)
+				elif item == 11:
+					self.tps[1][0] = (x, y)
+				elif item == 21:
+					self.tps[1][1] = (x, y)
+				elif item == 12:
+					self.tps[2][0] = (x, y)
+				elif item == 22:
+					self.tps[2][1] = (x, y)
+				elif item == 13:
+					self.tps[3][0] = (x, y)
+				elif item == 23:
+					self.tps[3][1] = (x, y)
+		"""
 		return g
 
 	def get_click(self, mx, my):
