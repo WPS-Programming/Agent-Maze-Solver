@@ -138,26 +138,6 @@ while running:
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                '''
-                new_grid = grid.transpose().copy()
-                new_grid = new_grid[~np.all(grid == 0, axis=1)]
-                mask = (new_grid == 0).all(0)
-                column_indices = np.where(mask)[0]
-                new_grid = new_grid[:,~mask]
-
-                height = len(new_grid)
-                width = len(new_grid[0])
-                print(height, width)
-
-                if height > width:
-                    width = height
-                else:
-                    height = width
-
-                final_grid = np.copy(new_grid)
-                final_grid.resize((height,width))
-                print(height,width)
-                '''
 
                 g = grid.copy()
                 # Top down cleaning
