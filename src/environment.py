@@ -1,4 +1,5 @@
 import pygame
+import pickle
 import time
 import random
 import numpy as np
@@ -26,9 +27,10 @@ def find_start(grid):
 
 
 class Env:
-	def __init__(self, grid):
+	def __init__(self, build):
 
-		self.grid = grid
+		self.build = build
+		self.grid = build['grid']
 		self.agent = pygame.math.Vector2(*find_start(grid))
 		self.turns = 0
 
@@ -177,7 +179,11 @@ class Env:
 
 if __name__ == "__main__":
 	grid = np.loadtxt('map.txt')
-	env = Env(grid)
+
+	with open('map.pkl', 'rb') as inp:
+		build = pickle.load(inp)
+	
+	env = Env(build)
 	clock = pygame.time.Clock()
 	last_tick = 0
 

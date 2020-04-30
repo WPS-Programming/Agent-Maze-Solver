@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 import pygame
 import pygame.gfxdraw
 
@@ -133,6 +134,17 @@ class Builder:
 			g = np.append(g, np.zeros(
 				shape=(length, length - len(g[0]))), axis=1)
 
+		for y, row in enumerate(g):
+			for x, item in enumerate(row):
+
+				if item == 2:
+					self.start = (x, y)
+				elif item == 3:
+					self.end = (x, y)
+
+				# TODO: fix corresponding values for teleporters /
+				# and add them to a coordinates list for the 'build'
+				
 		return g
 
 	def get_click(self, mx, my):
@@ -208,11 +220,14 @@ class Builder:
 				elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RETURN:
 						np.savetxt('map.txt', self.get_output(), fmt="%d")
+						with open('map.pkl', 'wb') as output:
+							content = {'grid':self.get_output(), 'start':self.start, 'end': self.end, 'teleporters':self.tps}
+							pickle.dump(content, output, pickle.HIGHEST_PROTOCOL)
 
 			if pygame.mouse.get_pressed()[0] == 1:
 				valid, pos = self.get_click(*pygame.mouse.get_pos())
 				if valid and self.selector is not 'tp':
-					if self.selector is 'none':
+					if self.selector == 'none':
 						v = self.grid[pos[0]][pos[1]]
 
 						if self.start == pos:
