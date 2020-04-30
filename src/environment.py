@@ -211,8 +211,6 @@ class Env:
 			
 
 if __name__ == "__main__":
-	grid = np.loadtxt('map.txt')
-
 	with open('map.pkl', 'rb') as inp:
 		build = pickle.load(inp)
 	

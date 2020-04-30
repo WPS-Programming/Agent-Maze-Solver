@@ -14,7 +14,7 @@ VALUE_MAP = {
 
 
 def shift_tuple(t, up, left):
-	return (t[0] - up, t[1] - left)
+	return (t[0] - left, t[1] - up)
 
 
 class Button:
@@ -64,9 +64,9 @@ class Builder:
 
 		self.edited = []
 
-	def set_pos(self, r, c, v):
-		self.grid[r][c] = v
-		self.edited.append((r, c))
+	def set_pos(self, x, y, v):
+		self.grid[y][x] = v
+		self.edited.append((y, x))
 
 	def draw_background(self):
 
@@ -156,7 +156,7 @@ class Builder:
 				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
 				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
 
-				return ((up_shift, left_shift), g)
+			return ((up_shift, left_shift), g)
 		except:
 			print('Missing required component')
 			return (None, None)
@@ -181,6 +181,8 @@ class Builder:
 
 				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
 				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
+
+				print(self.tps)
 		except:
 			print('Missing required component')
 
@@ -192,7 +194,7 @@ class Builder:
 			col = round(mx/15) - 2
 			if col >= 50:
 				col = 49
-			return (True, (row, col))
+			return (True, (col, row))
 		return (False, None)
 
 	def mainloop(self):
@@ -272,7 +274,7 @@ class Builder:
 				valid, pos = self.get_click(*pygame.mouse.get_pos())
 				if valid and (self.selector is 'wall' or self.selector is 'none'):
 					if self.selector == 'none':
-						v = self.grid[pos[0]][pos[1]]
+						v = self.grid[pos[1]][pos[0]]
 
 						if self.start == pos:
 							self.start = None
