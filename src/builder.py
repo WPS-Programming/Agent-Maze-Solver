@@ -144,8 +144,31 @@ class Builder:
 				shape=(length, length - len(g[0]))), axis=1)
 
 		try:
+			self.start = shift_tuple(self.start, up_shift, left_shift)
+			self.end = shift_tuple(self.end, up_shift, left_shift)
 
-			# TODO: styling of comparative tuples to be (x, y)
+			for i in range(len(self.tps)):
+				if self.tps[i] == 0:
+					continue
+
+				tp_start, tp_end = self.tps[i]
+
+				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
+				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
+
+				return ((up_shift, left_shift), g)
+		except:
+			print('Missing required component')
+			return (None, None)
+
+	def reset(self, shift):
+		# Shifts everything back to its original positions after compressing.
+		try:
+			up_shift, left_shift = shift
+
+			# Reverse shifts
+			up_shift = -up_shift
+			left_shift = -left_shift
 
 			self.start = shift_tuple(self.start, up_shift, left_shift)
 			self.end = shift_tuple(self.end, up_shift, left_shift)
@@ -153,44 +176,13 @@ class Builder:
 			for i in range(len(self.tps)):
 				if self.tps[i] == 0:
 					continue
-				
+
 				tp_start, tp_end = self.tps[i]
 
 				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
 				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
 		except:
 			print('Missing required component')
-
-		# NOTE: Working but 'nonefficient' way of finding all values
-		# notation in (x, y) order
-		# when tested, no noticable speed decrease/defficiency
-		
-		for y, row in enumerate(g):
-			for x, item in enumerate(row):
-
-				if item == 2:
-					self.start = (x, y)
-				elif item == 3:
-					self.end = (x, y)
-				# teleporters
-				elif item == 10:
-					self.tps[0][0] = (x, y)
-				elif item == 20:
-					self.tps[0][1] = (x, y)
-				elif item == 11:
-					self.tps[1][0] = (x, y)
-				elif item == 21:
-					self.tps[1][1] = (x, y)
-				elif item == 12:
-					self.tps[2][0] = (x, y)
-				elif item == 22:
-					self.tps[2][1] = (x, y)
-				elif item == 13:
-					self.tps[3][0] = (x, y)
-				elif item == 23:
-					self.tps[3][1] = (x, y)
-		
-		return g
 
 	def get_click(self, mx, my):
 		if (mx > OFFSET and mx < WIDTH - 200 - OFFSET) and (my > OFFSET and my < HEIGHT - OFFSET):
@@ -216,7 +208,6 @@ class Builder:
 					for button in self.buttons:
 						if button.is_clicked():
 							if button.value == 'tp' and self.selector == 'tp':
-								print('change')
 								self.tp_index = (self.tp_index + 1) % 4
 								button.color = COLOR_TP[self.tp_index]
 								button.render(self.screen)
@@ -240,7 +231,7 @@ class Builder:
 							self.set_pos(*pos, VALUE_MAP['end'])
 
 							if self.end is not None:
-								self.set_pos(*self.end, VALUE_MAP['end'])
+								self.set_pos(*self.end, VALUE_MAP['none'])
 
 							self.end = pos
 						elif self.selector == 'tp':
@@ -264,14 +255,22 @@ class Builder:
 								self.set_pos(*pos, 20 + self.tp_index)
 				elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RETURN:
-						np.savetxt('map.txt', self.get_output(), fmt="%d")
+						shift, condensed_grid = self.get_output()
+
+						if condensed_grid is None:
+							break
+
 						with open('map.pkl', 'wb') as output:
-							content = {'grid':self.get_output(), 'start':self.start, 'end': self.end, 'teleporters':self.tps}
-							pickle.dump(content, output, pickle.HIGHEST_PROTOCOL)
+							content = {'grid': condensed_grid, 'start': self.start,
+									   'end': self.end, 'teleporters': self.tps}
+							pickle.dump(content, output,
+										pickle.HIGHEST_PROTOCOL)
+
+						self.reset(shift)
 
 			if pygame.mouse.get_pressed()[0] == 1:
 				valid, pos = self.get_click(*pygame.mouse.get_pos())
-				if valid and self.selector != 'tp':
+				if valid and (self.selector is 'wall' or self.selector is 'none'):
 					if self.selector == 'none':
 						v = self.grid[pos[0]][pos[1]]
 
