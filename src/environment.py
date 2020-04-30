@@ -33,6 +33,7 @@ class Env:
 		self.grid = build['grid']
 		self.agent = pygame.math.Vector2(*find_start(grid))
 		self.turns = 0
+		self.completed = False
 
 		print(build['teleporters'])
 
@@ -152,6 +153,9 @@ class Env:
 
 	def receive(self, ipt):
 
+		if self.completed:
+			return
+
 		self.turns += 1
 
 		velocity = pygame.math.Vector2(*ipt)
@@ -191,6 +195,10 @@ if __name__ == "__main__":
 	env = Env(build)
 	clock = pygame.time.Clock()
 	last_tick = 0
+	update_default = 500
+	update_on = update_default
+
+	dev_mode = True
 
 	env.pygame_init()
 
@@ -202,8 +210,32 @@ if __name__ == "__main__":
 			if event.type == pygame.QUIT:
 				pygame.display.quit()
 				quit()
+			if event.type == pygame.KEYDOWN:
 
-		if abs(last_tick - pygame.time.get_ticks()) > 500:
+				if dev_mode:
+					if event.key == pygame.K_RIGHT:
+						env.receive((1,0))
+					elif event.key == pygame.K_LEFT:
+						env.receive((-1,0))
+					elif event.key == pygame.K_UP:
+						env.receive((0,-1))
+					elif event.key == pygame.K_DOWN:
+						env.receive((0,1))
+
+				# Forces a drawing update on next tick ~12 raw delay
+				if event.key in [
+					pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN]:
+					update_on = 0
+
+		if abs(last_tick - pygame.time.get_ticks()) > update_on:
 			env.draw()
-			env.receive((random.randint(-1, 1), random.randint(-1, 1)))
+
+			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
+
+			#TODO:
+			# input = env.get_state()
+			# move = agent.make_move(input)
+			# env.receive(move)
+
 			last_tick = pygame.time.get_ticks()
+			if update_on != update_default: update_on = update_default
