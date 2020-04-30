@@ -18,7 +18,8 @@ Lavender = Color("#c65ee6")
 Mandy = Color("#e65e5e")
 Porsche = Color("#e6a45e")
 
-Teleporters = [ (135, 251, 255), (247, 135, 255), (255, 135, 135), (253, 255, 135)  ]
+Manz = Color("#eceb65")
+
 
 def optimal_size(grid):
 
@@ -28,3 +29,11 @@ def optimal_size(grid):
     calculated = desired_sq - (desired_sq % sq_length)
 
     return calculated + MARGIN, calculated
+
+def find_start(grid):
+
+    for y, row in enumerate(grid):
+        for x, item in enumerate(row):
+
+            if item == 2:
+                return (x, y)
