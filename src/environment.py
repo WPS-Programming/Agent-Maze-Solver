@@ -35,8 +35,6 @@ class Env:
 		self.turns = 0
 		self.completed = False
 
-		print(build['teleporters'])
-
 	def __str__(self):
 		return f'Env(agent={self.agent}, grid={[len(self.grid),len(self.grid[0])]})'
 
@@ -184,7 +182,33 @@ class Env:
 
 		# Make a successful move
 		self.agent = predicted
+		self.analyze_position()
 
+	def analyze_position(self):
+
+		# Method which checks and interacts with non
+		# empty or wall cells
+
+		A = self.agent
+		pos = (int(A.x), int(A.y))
+		grid_item = self.grid[int(A.y)][int(A.x)]
+
+		# If reached end
+		if pos == self.build['end']:
+			print("Maze Completed")
+			self.completed = True
+		
+		# If on teleporter
+		elif grid_item >= 10 and grid_item < 20:
+			find_index = [i[0] if type(i) != int \
+				else i for i in self.build['teleporters']]
+
+			for index, item in enumerate(find_index):
+				if pos == item:
+					new_pos = self.build['teleporters'][index][1]
+					self.agent = pygame.math.Vector2(*new_pos)
+					return
+			
 
 if __name__ == "__main__":
 	grid = np.loadtxt('map.txt')

@@ -164,7 +164,7 @@ class Builder:
 		# NOTE: Working but 'nonefficient' way of finding all values
 		# notation in (x, y) order
 		# when tested, no noticable speed decrease/defficiency
-		"""
+		
 		for y, row in enumerate(g):
 			for x, item in enumerate(row):
 
@@ -189,7 +189,7 @@ class Builder:
 					self.tps[3][0] = (x, y)
 				elif item == 23:
 					self.tps[3][1] = (x, y)
-		"""
+		
 		return g
 
 	def get_click(self, mx, my):
