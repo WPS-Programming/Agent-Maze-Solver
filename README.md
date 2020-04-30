@@ -1,4 +1,4 @@
-# Agent-Maze-SDK
+# Agent-Maze-Solver
 
 A project developed by WPS Lakerbotics Programming to further practice our understanding of
 2d arrays, and manipulating agents.
