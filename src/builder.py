@@ -46,7 +46,7 @@ class Builder:
 
 		pygame.display.set_caption('Environment Builder')
 
-		self.grid = np.zeros(shape=(50, 50))
+		self.grid = np.zeros(shape=(50, 50), dtype=np.intc)
 		self.selector = 'wall'
 		self.tp_index = 0
 
@@ -137,7 +137,7 @@ class Builder:
 		length = max(len(g), len(g[0]))
 
 		if len(g) < length:
-			g = np.append(g, np.zeros(shape=(length - len(g), length)), axis=0)
+			g = np.append(g, np.zeros(shape=(length - len(g), length), dtype=np.intc), axis=0)
 
 		if len(g[0]) < length:
 			g = np.append(g, np.zeros(

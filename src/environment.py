@@ -177,7 +177,7 @@ class Env:
 
 		def get_radius(self, radius=1):
 			diameter = (2 * radius) + 1
-			fov = np.ones((diameter, diameter))
+			fov = np.ones((diameter, diameter), dtype=np.intc)
 
 			fov[radius][radius] = 9  # 9 indicates agent
 
