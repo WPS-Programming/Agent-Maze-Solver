@@ -181,8 +181,6 @@ class Builder:
 
 				self.tps[i][0] = shift_tuple(tp_start, up_shift, left_shift)
 				self.tps[i][1] = shift_tuple(tp_end, up_shift, left_shift)
-
-				print(self.tps)
 		except:
 			print('Missing required component')
 

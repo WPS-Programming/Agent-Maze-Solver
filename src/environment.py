@@ -95,40 +95,12 @@ class Env:
 					elif item == 3:
 						# end tile
 						roundedRect(self.screen, COLOR_END, rect, roundness)
-
-					# teleporters
-					elif item == 10:
+					elif item >= 10:
 						roundedRect(
-							self.screen, TURQUOISE, rect, tp_roundness)
-					elif item == 20:
-						roundedRect(
-							self.screen, TURQUOISE, rect, tp_roundness)
-						roundedRect(
-							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 11:
-						roundedRect(
-							self.screen, LAVENDER, rect, tp_roundness)
-					elif item == 21:
-						roundedRect(
-							self.screen, LAVENDER, rect, tp_roundness)
-						roundedRect(
-							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 12:
-						roundedRect(
-							self.screen, MANDY, rect, tp_roundness)
-					elif item == 22:
-						roundedRect(
-							self.screen, MANDY, rect, tp_roundness)
-						roundedRect(
-							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
-					elif item == 13:
-						roundedRect(
-							self.screen, PORSCHE, rect, tp_roundness)
-					elif item == 23:
-						roundedRect(
-							self.screen, PORSCHE, rect, tp_roundness)
-						roundedRect(
-							self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
+							self.screen, COLOR_TP[int(item % 10)], rect, tp_roundness)
+						
+						if item // 10 > 1:
+							roundedRect(self.screen, COLOR_GUNMETAL, tp_rect, tp_roundness)
 
 		def agent(self):
 
@@ -170,7 +142,8 @@ class Env:
 		predicted = self.agent + velocity
 
 		# If trying to move outside borders
-		if (predicted.x < 0 or predicted.y < 0) or (predicted.x > self.WIDTH-200 or predicted.y > self.HEIGHT):
+		if (predicted.x < 0 or predicted.y < 0) or \
+			(predicted.x > self.WIDTH-200 or predicted.y > self.HEIGHT):
 			# Do nothing
 			return
 
@@ -290,4 +263,4 @@ if __name__ == "__main__":
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
 
 			last_tick = pygame.time.get_ticks()
-			if update_on != update_default: update_on = update_default
+			if update_on != UPDATE_DEFAULT: update_on = UPDATE_DEFAULT
