@@ -159,7 +159,7 @@ class Env:
 
 		A = self._agent
 		pos = (int(A.x), int(A.y))
-		grid_item = self._grid[pos[1]][pos[0]]
+		grid_item = int(self._grid[int(A.y)][int(A.x)])
 
 		# If reached end
 		if pos == self._build['end']:
@@ -191,7 +191,7 @@ class Env:
 					fx, fy = x + radius, y + radius
 
 					# "Real" x and y (relative to grid)
-					rx, ry = x + cx, y + cy
+					rx, ry = int(x + cx), int(y + cy)
 
 					# Checks for out of bounds errors
 					try:
@@ -258,8 +258,6 @@ if __name__ == "__main__":
 			# input = env.get_state()
 			# move = agent.make_move(input)
 			# env.receive(move)
-
-			ctx = env.get_state()
 
 			# Moves the agent in a random direction
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))

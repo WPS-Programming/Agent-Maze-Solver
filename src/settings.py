@@ -1,6 +1,6 @@
 import pygame
 
-DEV_MODE = True
+DEV_MODE = False
 
 WIDTH = 1000
 HEIGHT = 800
