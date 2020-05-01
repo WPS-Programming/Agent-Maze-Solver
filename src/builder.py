@@ -104,10 +104,10 @@ class Builder:
 			elif item == 3:
 				pygame.draw.rect(self.screen, (68, 156, 212), itemRect)
 			elif item - 10 < 5:
-				index = int((item - 10) % 4)
+				index = (item - 10) % 4
 				pygame.draw.rect(self.screen, COLOR_TP[index], itemRect)
 			elif item - 20 < 5:
-				index = int((item - 20) % 4)
+				index = (item - 20) % 4
 				pygame.draw.rect(self.screen, COLOR_TP[index], tpRect, 2)
 
 	def get_output(self):
@@ -141,7 +141,7 @@ class Builder:
 
 		if len(g[0]) < length:
 			g = np.append(g, np.zeros(
-				shape=(length, length - len(g[0]))), axis=1)
+				shape=(length, length - len(g[0])), dtype=np.intc), axis=1)
 
 		try:
 			self.start = shift_tuple(self.start, up_shift, left_shift)

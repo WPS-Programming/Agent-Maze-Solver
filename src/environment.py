@@ -96,7 +96,7 @@ class Env:
 					roundedRect(self.screen, COLOR_END, rect, roundness)
 				elif item >= 10:
 					roundedRect(
-						self.screen, COLOR_TP[int(item % 10)], rect, tp_roundness)
+						self.screen, COLOR_TP[item % 10], rect, tp_roundness)
 
 					if item // 10 > 1:
 						roundedRect(self.screen, COLOR_GUNMETAL,
@@ -159,7 +159,7 @@ class Env:
 
 		A = self._agent
 		pos = (int(A.x), int(A.y))
-		grid_item = int(self._grid[int(A.y)][int(A.x)])
+		grid_item = self._grid[pos[1]][pos[0]]
 
 		# If reached end
 		if pos == self._build['end']:
@@ -191,7 +191,7 @@ class Env:
 					fx, fy = x + radius, y + radius
 
 					# "Real" x and y (relative to grid)
-					rx, ry = int(x + cx), int(y + cy)
+					rx, ry = x + cx, y + cy
 
 					# Checks for out of bounds errors
 					try:
@@ -202,7 +202,7 @@ class Env:
 						fov[fx][fx] = -1
 			return fov
 
-		agent_position = (int(self._agent.x), int(self._agent.y))
+		agent_position = (self._agent.x, self._agent.y)
 		has_moved = self._agent is not self._prev
 
 		return {
