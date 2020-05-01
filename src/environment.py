@@ -152,6 +152,8 @@ class Env:
 
 	def receive(self, ipt):
 
+		self.prev = self.agent
+
 		if self.completed:
 			return
 
@@ -182,7 +184,6 @@ class Env:
 			return
 
 		# Make a successful move
-		self.prev = self.agent
 		self.agent = predicted
 		self.analyze_position()
 
@@ -232,11 +233,11 @@ class Env:
 						fov[yr][xr] = self.grid[int(y+ay)][int(x+ax)]
 					except:
 						fov[xr][xr] = -1
-			print(fov)
 			return fov
 
 		agent_position = (int(self.agent.x), int(self.agent.y))
 		has_moved = self.agent is not self.prev
+		print(self.agent, self.prev)
 
 		return {"position" : agent_position, "moved" : has_moved, "grid" : get_radius(self)}
 
@@ -287,7 +288,7 @@ if __name__ == "__main__":
 			# move = agent.make_move(input)
 			# env.receive(move)
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
-			env.get_state()
+			print(env.get_state()['moved'])
 
 			last_tick = pygame.time.get_ticks()
 			if update_on != update_default: update_on = update_default
