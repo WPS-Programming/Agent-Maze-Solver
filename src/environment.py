@@ -96,7 +96,7 @@ class Env:
 					roundedRect(self.screen, COLOR_END, rect, roundness)
 				elif item >= 10:
 					roundedRect(
-						self.screen, COLOR_TP[item % 10], rect, tp_roundness)
+						self.screen, COLOR_TP[int(item % 10)], rect, tp_roundness)
 
 					if item // 10 > 1:
 						roundedRect(self.screen, COLOR_GUNMETAL,
@@ -202,7 +202,7 @@ class Env:
 						fov[fx][fx] = -1
 			return fov
 
-		agent_position = (self._agent.x, self._agent.y)
+		agent_position = (int(self._agent.x), int(self._agent.y))
 		has_moved = self._agent is not self._prev
 
 		return {
@@ -258,6 +258,8 @@ if __name__ == "__main__":
 			# input = env.get_state()
 			# move = agent.make_move(input)
 			# env.receive(move)
+
+			ctx = env.get_state()
 
 			# Moves the agent in a random direction
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
