@@ -29,7 +29,7 @@ class Env:
 		self.completed = False
 
 	def __str__(self):
-		return f'Env(agent={self.agent}, grid={[len(self.grid),len(self.grid[0])]})'
+		return f'Env(agent={self.agent}, grid={[len(self.grid),len(self.grid[0])]}, turns={self.turns})'
 
 	def pygame_init(self):
 
@@ -63,8 +63,7 @@ class Env:
 								0, self.WIDTH-200, self.HEIGHT, COLOR_TIMBERWOLF)
 
 			# Draw text
-			text = "Turns: " + str(self.turns)
-			text = self.font.render(text, True, (COLOR_MAIZE))
+			text = self.font.render("Turns: " + str(self.turns), True, (COLOR_MAIZE))
 			self.screen.blit(text, (805, 20))
 
 		def tiles(self):
@@ -248,8 +247,7 @@ if __name__ == "__main__":
 	env = Env(build)
 	clock = pygame.time.Clock()
 	last_tick = 0
-	update_default = 500
-	update_on = update_default
+	update_on = UPDATE_DEFAULT
 
 	dev_mode = True
 
@@ -283,12 +281,13 @@ if __name__ == "__main__":
 		if abs(last_tick - pygame.time.get_ticks()) > update_on:
 			env.draw()
 
-			#TODO:
+			# Implementation
 			# input = env.get_state()
 			# move = agent.make_move(input)
 			# env.receive(move)
+
+			# Moves the agent in a random direction
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
-			print(env.get_state()['moved'])
 
 			last_tick = pygame.time.get_ticks()
 			if update_on != update_default: update_on = update_default

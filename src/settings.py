@@ -3,6 +3,7 @@ import pygame
 WIDTH = 1000
 HEIGHT = 800
 FPS = 144
+UPDATE_DEFAULT = 500
 OFFSET = 25
 
 COLOR_MAIZE = pygame.Color("#e8c547")
