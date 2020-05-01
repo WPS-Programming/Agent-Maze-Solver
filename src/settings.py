@@ -4,6 +4,7 @@ DEV_MODE = False
 
 WIDTH = 1000
 HEIGHT = 800
+MARGIN = 200
 FPS = 144
 UPDATE_DEFAULT = 500
 OFFSET = 25
@@ -39,8 +40,7 @@ def roundedRect(surface, color, rect, radius=0.1):
 
 	circle = pygame.Surface([min(rect.size)*3]*2, pygame.SRCALPHA)
 	pygame.draw.ellipse(circle, (0, 0, 0), circle.get_rect(), 0)
-	circle = pygame.transform.smoothscale(
-		circle, [int(min(rect.size)*radius)]*2)
+	circle = pygame.transform.smoothscale(circle, [int(min(rect.size)*radius)]*2)
 
 	radius = rectangle.blit(circle, (0, 0))
 	radius.bottomright = rect.bottomright
