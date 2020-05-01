@@ -24,6 +24,7 @@ class Env:
 		self.build = build
 		self.grid = build['grid']
 		self.agent = pygame.math.Vector2(*build['start'])
+		self.prev = pygame.math.Vector2(-1,-1)
 		self.turns = 0
 		self.completed = False
 
@@ -141,7 +142,7 @@ class Env:
 
 			rect = (x*sq+shift, y*sq+shift, sq-(2*shift), sq-(2*shift))
 
-			roundedRect(self.screen, Manz, rect, roundness)
+			roundedRect(self.screen, COLOR_MAIZE, rect, roundness)
 
 		background(self)
 		tiles(self)
@@ -181,6 +182,7 @@ class Env:
 			return
 
 		# Make a successful move
+		self.prev = self.agent
 		self.agent = predicted
 		self.analyze_position()
 
@@ -208,7 +210,35 @@ class Env:
 					new_pos = self.build['teleporters'][index][1]
 					self.agent = pygame.math.Vector2(*new_pos)
 					return
+	
+	def get_state(self):
+
+		def get_radius(self, radius = 1):
+			sq = (2 * radius) + 1
+			fov = np.ones((sq, sq))
 			
+			fov[radius][radius] = 9 # Indicates center
+
+			ax, ay = self.agent.x, self.agent.y
+
+			for y in range(-radius, radius+1):
+				for x in range(-radius, radius+1):
+
+					xr, yr = x+radius, y+radius
+					if fov[yr][xr] == 9:
+						continue
+
+					try:
+						fov[yr][xr] = self.grid[int(y+ay)][int(x+ax)]
+					except:
+						fov[xr][xr] = -1
+			print(fov)
+			return fov
+
+		agent_position = (int(self.agent.x), int(self.agent.y))
+		has_moved = self.agent is not self.prev
+
+		return {"position" : agent_position, "moved" : has_moved, "grid" : get_radius(self)}
 
 if __name__ == "__main__":
 	with open('map.pkl', 'rb') as inp:
@@ -256,7 +286,8 @@ if __name__ == "__main__":
 			# input = env.get_state()
 			# move = agent.make_move(input)
 			# env.receive(move)
-			env.receive((random.randint(-1, 1), random.randint(-1, 1)))
-			
+			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
+			env.get_state()
+
 			last_tick = pygame.time.get_ticks()
 			if update_on != update_default: update_on = update_default
