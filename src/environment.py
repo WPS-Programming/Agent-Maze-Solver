@@ -222,8 +222,6 @@ if __name__ == "__main__":
 	last_tick = 0
 	update_on = UPDATE_DEFAULT
 
-	dev_mode = True
-
 	env.pygame_init()
 
 	while True:
@@ -236,7 +234,7 @@ if __name__ == "__main__":
 				quit()
 			if event.type == pygame.KEYDOWN:
 
-				if dev_mode:
+				if DEV_MODE:
 					if event.key == pygame.K_RIGHT:
 						env.receive((1,0))
 					elif event.key == pygame.K_LEFT:
@@ -255,11 +253,34 @@ if __name__ == "__main__":
 			env.draw()
 
 			# Implementation
+
+			"""
+			Dictionary Keys:
+			'position' (x, y)     - agent location
+			'moved' boolean   	  - whether agent has moved position since previous turn
+			'grid' numpy 2d array - surroundings of agent
+
+			"""
 			# input = env.get_state()
+
+
+			"""
+			Logic provided by your agent to determine a move.
+			Acceptable moves:
+			(1,0), (-1,0), (0,1), (0,-1)
+			"""
 			# move = agent.make_move(input)
+
+
+			"""
+			Environment receiving your move.
+			Acceptable moves:
+			(1,0), (-1,0), (0,1), (0,-1)
+			"""
 			# env.receive(move)
 
-			# Moves the agent in a random direction
+
+			# Moves the agent in a random direction (not effective)
 			#env.receive((random.randint(-1, 1), random.randint(-1, 1)))
 
 			last_tick = pygame.time.get_ticks()

@@ -1,5 +1,7 @@
 import pygame
 
+DEV_MODE = False
+
 WIDTH = 1000
 HEIGHT = 800
 FPS = 144
